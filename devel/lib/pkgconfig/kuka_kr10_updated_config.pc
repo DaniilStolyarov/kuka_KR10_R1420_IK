@@ -1,0 +1,8 @@
+prefix=/home/danissimo/kuka_ws/devel
+
+Name: kuka_kr10_updated_config
+Description: Description of kuka_kr10_updated_config
+Version: 0.3.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

@@ -147,7 +147,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/danissimo/kuka_ws/build/gtest/cmake_install.cmake")
   include("/home/danissimo/kuka_ws/build/kuka_experimental/cmake_install.cmake")
-  include("/home/danissimo/kuka_ws/build/kuka_kr10_moveit_config/cmake_install.cmake")
+  include("/home/danissimo/kuka_ws/build/kuka_kr10_updated_config/cmake_install.cmake")
   include("/home/danissimo/kuka_ws/build/kuka_resources/cmake_install.cmake")
   include("/home/danissimo/kuka_ws/build/kuka_kr10_support/cmake_install.cmake")
 

@@ -55,7 +55,7 @@ CMAKE_BINARY_DIR = /home/danissimo/kuka_ws/build
 # The main recursive "all" target.
 all: gtest/all
 all: kuka_experimental/all
-all: kuka_kr10_moveit_config/all
+all: kuka_kr10_updated_config/all
 all: kuka_resources/all
 all: kuka_kr10_support/all
 
@@ -64,7 +64,7 @@ all: kuka_kr10_support/all
 # The main recursive "preinstall" target.
 preinstall: gtest/preinstall
 preinstall: kuka_experimental/preinstall
-preinstall: kuka_kr10_moveit_config/preinstall
+preinstall: kuka_kr10_updated_config/preinstall
 preinstall: kuka_resources/preinstall
 preinstall: kuka_kr10_support/preinstall
 
@@ -78,7 +78,7 @@ clean: CMakeFiles/tests.dir/clean
 clean: CMakeFiles/download_extra_data.dir/clean
 clean: gtest/clean
 clean: kuka_experimental/clean
-clean: kuka_kr10_moveit_config/clean
+clean: kuka_kr10_updated_config/clean
 clean: kuka_resources/clean
 clean: kuka_kr10_support/clean
 
@@ -160,24 +160,6 @@ kuka_experimental/clean: kuka_experimental/CMakeFiles/_catkin_empty_exported_tar
 .PHONY : kuka_experimental/clean
 
 #=============================================================================
-# Directory level rules for directory kuka_kr10_moveit_config
-
-# Recursive "all" directory target.
-kuka_kr10_moveit_config/all:
-
-.PHONY : kuka_kr10_moveit_config/all
-
-# Recursive "preinstall" directory target.
-kuka_kr10_moveit_config/preinstall:
-
-.PHONY : kuka_kr10_moveit_config/preinstall
-
-# Recursive "clean" directory target.
-kuka_kr10_moveit_config/clean:
-
-.PHONY : kuka_kr10_moveit_config/clean
-
-#=============================================================================
 # Directory level rules for directory kuka_kr10_support
 
 # Recursive "all" directory target.
@@ -204,6 +186,24 @@ kuka_kr10_support/clean: kuka_kr10_support/CMakeFiles/run_tests_kuka_kr10_suppor
 kuka_kr10_support/clean: kuka_kr10_support/CMakeFiles/_run_tests_kuka_kr10_support_roslaunch-check_test_roslaunch_test_kr10r1420.xml.dir/clean
 
 .PHONY : kuka_kr10_support/clean
+
+#=============================================================================
+# Directory level rules for directory kuka_kr10_updated_config
+
+# Recursive "all" directory target.
+kuka_kr10_updated_config/all:
+
+.PHONY : kuka_kr10_updated_config/all
+
+# Recursive "preinstall" directory target.
+kuka_kr10_updated_config/preinstall:
+
+.PHONY : kuka_kr10_updated_config/preinstall
+
+# Recursive "clean" directory target.
+kuka_kr10_updated_config/clean:
+
+.PHONY : kuka_kr10_updated_config/clean
 
 #=============================================================================
 # Directory level rules for directory kuka_resources

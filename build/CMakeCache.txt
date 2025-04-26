@@ -462,6 +462,12 @@ kuka_kr10_support_BINARY_DIR:STATIC=/home/danissimo/kuka_ws/build/kuka_kr10_supp
 kuka_kr10_support_SOURCE_DIR:STATIC=/home/danissimo/kuka_ws/src/kuka_kr10_support
 
 //Value Computed by CMake
+kuka_kr10_updated_config_BINARY_DIR:STATIC=/home/danissimo/kuka_ws/build/kuka_kr10_updated_config
+
+//Value Computed by CMake
+kuka_kr10_updated_config_SOURCE_DIR:STATIC=/home/danissimo/kuka_ws/src/kuka_kr10_updated_config
+
+//Value Computed by CMake
 kuka_resources_BINARY_DIR:STATIC=/home/danissimo/kuka_ws/build/kuka_resources
 
 //Value Computed by CMake

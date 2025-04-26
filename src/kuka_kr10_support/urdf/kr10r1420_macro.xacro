@@ -176,11 +176,13 @@
     </joint>
     
     <!-- I INSERTED VACUUM GRIPPER HERE -->
+    <!-- VACUUM GRIPPER START -->
     <link name="${prefix}vacuum_gripper">
       <visual>
-        <origin xyz="0 0 0.10" rpy="0 0 0"/>  <!-- Центр бокса на полпути вверх -->
+        <!-- Центр смещен к основанию (началу) гриппера -->
+        <origin xyz="0 0 0.10" rpy="0 0 0"/>  <!-- Смещение на половину длины -->
         <geometry>
-          <box size="0.1 0.1 0.2"/>
+          <box size="0.1 0.1 0.20"/>  <!-- Длина 0.20 м по Z -->
         </geometry>
         <material name="grey">
           <color rgba="0.3 0.3 0.3 1.0"/>
@@ -189,18 +191,27 @@
       <collision>
         <origin xyz="0 0 0.10" rpy="0 0 0"/>
         <geometry>
-          <box size="0.1 0.1 0.2"/>
+          <box size="0.1 0.1 0.20"/>
         </geometry>
       </collision>
     </link>
 
+    <!-- VACUUM GRIPPER END -->
     <joint name="${prefix}tool0-vacuum_gripper" type="fixed">
       <parent link="${prefix}tool0"/>
       <child link="${prefix}vacuum_gripper"/>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <!-- Нулевое смещение - гриппер начинается сразу от tool0 -->
+      <origin xyz="0 0 0" rpy="0 0 0"/>  
     </joint>
 
+        <!-- Фрейм на КОНЧИКЕ гриппера -->
+    <link name="${prefix}gripper_tip"/>
 
-    <!-- VACUUM GRIPPER END-->
+    <joint name="${prefix}gripper_tip_joint" type="fixed">
+      <parent link="${prefix}vacuum_gripper"/>
+      <child link="${prefix}gripper_tip"/>
+      <!-- Смещение на полную длину гриппера (0.20 м) -->
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
+    </joint>
   </xacro:macro>
 </robot>

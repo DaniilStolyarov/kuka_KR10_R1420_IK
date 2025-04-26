@@ -194,12 +194,15 @@
     <origin rpy="0 1.5707963267948966 0" xyz="0 0 0"/>
   </joint>
   <!-- I INSERTED VACUUM GRIPPER HERE -->
+  <!-- VACUUM GRIPPER START -->
   <link name="vacuum_gripper">
     <visual>
+      <!-- Центр смещен к основанию (началу) гриппера -->
       <origin rpy="0 0 0" xyz="0 0 0.10"/>
-      <!-- Центр бокса на полпути вверх -->
+      <!-- Смещение на половину длины -->
       <geometry>
-        <box size="0.1 0.1 0.2"/>
+        <box size="0.1 0.1 0.20"/>
+        <!-- Длина 0.20 м по Z -->
       </geometry>
       <material name="grey">
         <color rgba="0.3 0.3 0.3 1.0"/>
@@ -208,14 +211,23 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0.10"/>
       <geometry>
-        <box size="0.1 0.1 0.2"/>
+        <box size="0.1 0.1 0.20"/>
       </geometry>
     </collision>
   </link>
+  <!-- VACUUM GRIPPER END -->
   <joint name="tool0-vacuum_gripper" type="fixed">
     <parent link="tool0"/>
     <child link="vacuum_gripper"/>
+    <!-- Нулевое смещение - гриппер начинается сразу от tool0 -->
     <origin rpy="0 0 0" xyz="0 0 0"/>
   </joint>
-  <!-- VACUUM GRIPPER END-->
+  <!-- Фрейм на КОНЧИКЕ гриппера -->
+  <link name="gripper_tip"/>
+  <joint name="gripper_tip_joint" type="fixed">
+    <parent link="vacuum_gripper"/>
+    <child link="gripper_tip"/>
+    <!-- Смещение на полную длину гриппера (0.20 м) -->
+    <origin rpy="0 0 0" xyz="0 0 0.20"/>
+  </joint>
 </robot>

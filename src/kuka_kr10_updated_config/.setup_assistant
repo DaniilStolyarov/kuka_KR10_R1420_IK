@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: kuka_kr10_support
+    relative_path: urdf/kr10r1420.xacro
+    xacro_args: ""
+  SRDF:
+    relative_path: config/kuka_kr10r1420.srdf
+  CONFIG:
+    author_name: Daniil Stolyarov
+    author_email: danstolyarov79@gmail.com
+    generated_timestamp: 1745691341
