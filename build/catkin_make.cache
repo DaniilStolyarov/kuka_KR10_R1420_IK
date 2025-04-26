@@ -1,0 +1,2 @@
+kuka_experimental:kuka_kr10_moveit_config:kuka_kr10_support:kuka_resources
+-DCATKIN_DEVEL_PREFIX=/home/danissimo/kuka_ws/devel -DCMAKE_INSTALL_PREFIX=/home/danissimo/kuka_ws/install -G Unix Makefiles

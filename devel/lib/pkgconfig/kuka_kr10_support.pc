@@ -1,0 +1,8 @@
+prefix=/home/danissimo/kuka_ws/devel
+
+Name: kuka_kr10_support
+Description: Description of kuka_kr10_support
+Version: 0.1.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
