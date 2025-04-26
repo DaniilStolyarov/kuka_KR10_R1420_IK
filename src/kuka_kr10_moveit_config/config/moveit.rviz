@@ -1,0 +1,46 @@
+# demo_moveit.rviz
+
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+  - Class: rviz/Views
+    Name: Views
+
+Visualization Manager:
+  Global Options:
+    Fixed Frame: base_link
+
+  Displays:
+    - Class: rviz/Grid
+      Name: Grid
+      Enabled: true
+      Plane: XY
+      Cell Size: 1
+      Color: 160; 160; 164
+      Reference Frame: base_link
+
+    - Class: moveit_rviz_plugin/PlanningScene
+      Name: PlanningScene
+      Enabled: true
+      Robot Description Topic: /robot_description
+      Scene Topic: /planning_scene
+      Show Robot: false
+      Show Robot Collision: false
+      Show Robot Visual: false
+      Show Scene Geometry: true
+
+  Tools:
+    - Class: rviz/Interact
+    - Class: rviz/MoveCamera
+    - Class: rviz/Select
+
+  Views:
+    Current:
+      Class: rviz/Orbit
+      Distance: 2.0
+      Focal Point: {X: 0, Y: 0, Z: 0}
+      Name: Current View
+      Near Clip Distance: 0.01
+      Pitch: 0.8
+      Yaw: 0.8
+    Saved: []

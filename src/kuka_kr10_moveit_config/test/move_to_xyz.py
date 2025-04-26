@@ -1,47 +1,65 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import rospy
 import moveit_commander
-import geometry_msgs.msg
+from geometry_msgs.msg import Pose
+from sensor_msgs.msg import JointState
 
-if len(sys.argv) != 8:
-    print("Usage: move_to_xyz.py x y z qx qy qz qw")
-    sys.exit(1)
+def main():
+    if len(sys.argv) != 8:
+        print("Usage: move_to_xyz.py x y z qx qy qz qw")
+        sys.exit(1)
+    x, y, z, qx, qy, qz, qw = map(float, sys.argv[1:])
 
-x = float(sys.argv[1])
-y = float(sys.argv[2])
-z = float(sys.argv[3])
-qx = float(sys.argv[4])
-qy = float(sys.argv[5])
-qz = float(sys.argv[6])
-qw = float(sys.argv[7])
+    moveit_commander.roscpp_initialize(sys.argv)
+    rospy.init_node('move_to_xyz_node', anonymous=True)
 
-# Инициализация
-moveit_commander.roscpp_initialize([])
-rospy.init_node('move_to_xyz_node', anonymous=True)
+    arm = moveit_commander.MoveGroupCommander("manipulator")
+    arm.set_planning_time(5.0)
+    arm.set_num_planning_attempts(3)
+    arm.set_goal_orientation_tolerance(0.01)
+    arm.set_max_velocity_scaling_factor(0.5)
+    arm.set_max_acceleration_scaling_factor(0.5)
+    arm.set_start_state_to_current_state()
 
-group = moveit_commander.MoveGroupCommander("manipulator")
+    # цель по позе
+    target = Pose()
+    target.position.x = x
+    target.position.y = y
+    target.position.z = z
+    target.orientation.x = qx
+    target.orientation.y = qy
+    target.orientation.z = qz
+    target.orientation.w = qw
+    arm.set_pose_target(target)
 
-# Создание цели
-pose_target = geometry_msgs.msg.Pose()
-pose_target.position.x = x
-pose_target.position.y = y
-pose_target.position.z = z
-pose_target.orientation.x = qx
-pose_target.orientation.y = qy
-pose_target.orientation.z = qz
-pose_target.orientation.w = qw
+    # план + исполнение
+    plan_result = arm.plan()
+    # выдираем RobotTrajectory
+    traj = plan_result[1] if isinstance(plan_result, tuple) else plan_result
+    if not traj.joint_trajectory.points:
+        rospy.logerr("❌ Планирование не удалось")
+        return
 
-group.set_pose_target(pose_target)
-group.set_goal_orientation_tolerance(0.1)  # Можем чуть ужесточить теперь
-group.set_planning_time(5.0)
-group.set_num_planning_attempts(10)
-plan = group.go(wait=True)
+    arm.execute(traj, wait=True)
+        # после arm.execute(...)
+    arm.stop()
+    arm.clear_pose_targets()
+    rospy.sleep(0.1)
 
-group.stop()
-joints = group.get_current_joint_values()
-print(joints)
-group.clear_pose_targets()
+    # читаем реальные joint_states прямо из fake_controller_joint_states
+    try:
+        js = rospy.wait_for_message(
+            '/move_group/fake_controller_joint_states',
+            JointState,
+            timeout=2.0)
+        print("→ fake_controller_joint_states:", js.position)
+    except rospy.ROSException:
+        rospy.logerr("Не дождались /move_group/fake_controller_joint_states")
 
-moveit_commander.roscpp_shutdown()
+
+    moveit_commander.roscpp_shutdown()
+
+if __name__ == "__main__":
+    main()
