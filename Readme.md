@@ -58,3 +58,5 @@ kuka_ws/
 
 ---
 ## Демонстрация в Unity
+
+![{69EFC3BB-BE12-4690-8069-3A880E789C99}](https://github.com/user-attachments/assets/90c9f6fa-50f1-49e3-a7fd-bebea475851d)
