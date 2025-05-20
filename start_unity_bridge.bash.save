@@ -1,0 +1,1 @@
+roslaunch kuka_kr10_updated_config custom_moveit_planning_execution.launch > /

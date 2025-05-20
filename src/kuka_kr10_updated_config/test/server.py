@@ -3,7 +3,6 @@ import sys
 import rospy
 import moveit_commander
 from geometry_msgs.msg import Pose
-from sensor_msgs.msg import JointState
 from flask import Flask, request, jsonify
 
 app = Flask(__name__)
@@ -25,11 +24,12 @@ arm.set_start_state_to_current_state()
 def move():
     data = request.get_json(force=True)
     # Проверяем входные параметры
-    for k in ('x','y','z','qx','qy','qz','qw'):
-        if k not in data:
-            return jsonify(success=False, error=f"Missing parameter: {k}"), 400
+    required = ['x','y','z','qx','qy','qz','qw']
+    missing = [k for k in required if k not in data]
+    if missing:
+        return jsonify(success=False, error=f"Missing parameter(s): {', '.join(missing)}"), 400
 
-    # Формируем Pose
+    # Формируем целевую позу
     target = Pose()
     target.position.x = data['x']
     target.position.y = data['y']
@@ -41,35 +41,28 @@ def move():
 
     # Планирование
     arm.set_pose_target(target, end_effector_link="gripper_tip")
-    plan = arm.plan()
+    try:
+        plan = arm.plan()
+    except Exception as e:
+        arm.clear_pose_targets()
+        return jsonify(success=False, error=f"planning_exception: {str(e)}"), 500
+
+    # Извлекаем траекторию из результата plan()
     traj = plan[1] if isinstance(plan, tuple) else plan
-    if not traj.joint_trajectory.points:
+    if not getattr(traj, 'joint_trajectory', None) or not traj.joint_trajectory.points:
+        arm.clear_pose_targets()
         return jsonify(success=False, error="planning_failed"), 400
 
-    # Исполнение
-    arm.execute(traj, wait=True)
-    arm.stop()
-    arm.clear_pose_targets()
-    rospy.sleep(0.1)
-
-    # Читаем фактические joint_states
+    # Асинхронное исполнение, чтобы сразу вернуть ответ
     try:
-        js = rospy.wait_for_message(
-            '/move_group/fake_controller_joint_states',
-            JointState,
-            timeout=2.0
-        )
-    except rospy.ROSException:
-        return jsonify(success=False, error="no_joint_states_received"), 500
+        arm.execute(traj, wait=False)
+    except Exception as e:
+        arm.clear_pose_targets()
+        return jsonify(success=False, error=f"execution_exception: {str(e)}"), 500
 
-    # Возвращаем JSON с 6 позициями суставов
-    return jsonify(
-        success=True,
-        joint_state={
-            'name': js.name,
-            'position': js.position
-        }
-    )
+    # Сбрасываем цели — joint_states будут отдаваться через rosbridge
+    arm.clear_pose_targets()
+    return jsonify(success=True)
 
 if __name__ == '__main__':
     # Запускаем Flask-сервер на всех интерфейсах, порт 5000
